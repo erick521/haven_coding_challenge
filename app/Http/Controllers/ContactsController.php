@@ -10,11 +10,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Validator;
+use View;
 
 use App\Contact;
 
 class ContactsController extends Controller
 {
+    public function __construct() {
+        View::share('GOOGLE_MAPS_API_KEY', env('GOOGLE_MAPS_API_KEY'));
+    }
+
     public function getIndex(Request $request) {
 
         // collect contacts from Contact
