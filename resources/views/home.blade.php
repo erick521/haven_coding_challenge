@@ -3,10 +3,10 @@
 @section('content')
 
     <div class="container-fluid">
-
+        @csrf
         <div class="d-flex flex-row p-2">
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addNewContactModal">
+            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#contactDetailsModal">
                 Add New Contact
             </button>
         </div>
@@ -19,14 +19,20 @@
                     <th scope="col">First Name</th>
                     <th scope="col">Last Name</th>
                     <th scope="col">Email</th>
+                    <th scope="col">Options</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($contacts as $contact)
                 <tr>
                     <td>{{$contact["first_name"]}}</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
+                    <td>{{$contact["last_name"]}}</td>
+                    <td>{{$contact["email"]}}</td>
+                    <td style="vertical-align: middle;">
+                        <a title="View Details..."><button class="btn btn-outline-secondary btn-sm" onclick="showContactDetails(this, true);" data-contact="{{$contact}}"><i class="fa fa-info"></i></button></a>
+                        <a title="Edit..."><button class="btn btn-outline-secondary btn-sm" onclick="showContactDetails(this, false);" data-contact="{{$contact}}"><i class="fa fa-edit"></i></button></a>
+                        <a title="Delete..."><button class="btn btn-outline-secondary btn-sm" onclick="deleteContact(this);" data-id="{{$contact["id"]}}"><i class="fa fa-times"></i></button></a>
+                    </td>
                 </tr>
                 @endforeach
                 </tbody>
@@ -36,12 +42,11 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="addNewContactModal" tabindex="-1" role="dialog" aria-labelledby="addNewContactModal" aria-hidden="true" data-backdrop="static">
+    <div class="modal fade" id="contactDetailsModal" tabindex="-1" role="dialog" aria-labelledby="contactDetailsModal" aria-hidden="true" data-backdrop="static">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-                    @csrf
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -102,7 +107,7 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-5">
                                 <label for="city">City</label>
                                 <input type="text" class="form-control" id="city" name="city">
                             </div>
@@ -162,7 +167,7 @@
                                     <option value="WY">Wyoming</option>
                                 </select>
                             </div>
-                            <div class="form-group col-md-2">
+                            <div class="form-group col-md-3">
                                 <label for="zip">Zip</label>
                                 <input type="text" class="form-control" id="zip" name="zip">
                                 <div class="invalid-feedback">
@@ -173,25 +178,38 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="addNewContact(this);">Save changes</button>
+                    <button type="button" name="closeButton" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" name="addButton" class="btn btn-primary" onclick="addNewContact(this);">Add Contact</button>
+                    <button style="display: none" type="button" name="saveButton" class="btn btn-primary" onclick="editContact(this);">Save Changes</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
+    <script type="text/javascript">
+
+        $(function () {
+            $('#contactDetailsModal').on('hidden.bs.modal', function() {
+                $(this).find("form").trigger("reset");
+
+                $(this).find("input").removeAttr('disabled');
+                $(this).find("select").removeAttr('disabled');
+                $(this).find("[name='addButton']").show();
+                $(this).find("[name='saveButton']").hide();
+            });
+        });
+
         function addNewContact(button) {
             var $button = $(button);
             var $modal = $button.parents(".modal");
 
-            var csrf_token = $modal.find('[name="_token"]').val();
+            var csrf_token = $('[name="_token"]').val();
             var first_name = $modal.find('[name="first_name"]').val();
-            var last_name = $modal.find('[name="first_name"]').val();
+            var last_name = $modal.find('[name="last_name"]').val();
             var email = $modal.find('[name="email"]').val();
             var phone = $modal.find('[name="phone"]').val();
             var birthdate = $modal.find('[name="birthdate"]').val();
-            var address = $modal.find('[name="address"]').val();
+            var address1 = $modal.find('[name="address1"]').val();
             var address2 = $modal.find('[name="address2"]').val();
             var city = $modal.find('[name="city"]').val();
             var state = $modal.find('[name="state"]').val();
@@ -221,7 +239,7 @@
                         email: email,
                         phone: phone,
                         birthdate: birthdate,
-                        address: address,
+                        address1: address1,
                         address2: address2,
                         city: city,
                         state: state,
@@ -230,13 +248,157 @@
                     "json")
                     .done(function (result) {
                         console.log(result);
-                        $modal.modal('hide');
+                        if(result.success) {
+                            $modal.modal('hide');
+                            setTimeout(function() {
+                                location.reload();
+                            }, 600);
+                        } else {
+                            for(key in result.errors) {
+                                $modal.find("[name=" + key + "]").siblings(".invalid-feedback").html(result.errors[key]).show();
+
+                            }
+                        }
+
                     })
                     .fail(function () {
                         // todo update err message
                     });
             }
         }
+
+        function deleteContact(button) {
+
+            var $button = $(button);
+
+            var csrf_token = $("[name='_token']").val();
+            var id = $button.data('id');
+
+            console.log(id);
+
+            $.post("{{url('delete')}}",
+                {
+                    '_token': csrf_token,
+                    id: id
+                },
+                "json")
+                .done(function (result) {
+                    // console.log(result);
+                    if(result.success) {
+                        setTimeout(function() {
+                            location.reload();
+                        }, 600);
+                    } else {
+
+                    }
+
+                })
+                .fail(function () {
+                    // todo update err message
+                });
+        }
+
+        function showContactDetails(button, disableControls) {
+
+            var $button = $(button);
+            var $modal = $("#contactDetailsModal");
+
+            var contact = $button.data('contact');
+
+            if(disableControls) {
+                $modal.find("input").attr('disabled', 'disabled');
+                $modal.find("select").attr('disabled', 'disabled');
+            } else {
+                $modal.find("[name='saveButton']").data('id', contact["id"]).show();
+            }
+            $modal.find("[name='addButton']").hide();
+
+            $modal.find("[name='first_name']").val(contact["first_name"]);
+            $modal.find("[name='last_name']").val(contact["last_name"]);
+            $modal.find("[name='email']").val(contact["email"]);
+            $modal.find("[name='phone']").val(contact["phone"]);
+            $modal.find("[name='birthdate']").val(contact["birthdate"]);
+            $modal.find("[name='address1']").val(contact["address1"]);
+            $modal.find("[name='address2']").val(contact["address2"]);
+            $modal.find("[name='city']").val(contact["city"]);
+            $modal.find("[name='state']").val(contact["state"]);
+            $modal.find("[name='zip']").val(contact["zip"]);
+
+            $modal.modal("show");
+        }
+
+        function editContact(button) {
+            var $button = $(button);
+            var $modal = $button.parents(".modal");
+
+            var id = $button.data('id');
+            console.log(id);
+
+            var csrf_token = $('[name="_token"]').val();
+            var first_name = $modal.find('[name="first_name"]').val();
+            var last_name = $modal.find('[name="last_name"]').val();
+            var email = $modal.find('[name="email"]').val();
+            var phone = $modal.find('[name="phone"]').val();
+            var birthdate = $modal.find('[name="birthdate"]').val();
+            var address1 = $modal.find('[name="address1"]').val();
+            var address2 = $modal.find('[name="address2"]').val();
+            var city = $modal.find('[name="city"]').val();
+            var state = $modal.find('[name="state"]').val();
+            var zip = $modal.find('[name="zip"]').val();
+
+            $modal.find('.invalid-feedback').hide();
+
+            if(!first_name) {
+                $modal.find('[name="first_name"]').siblings('.invalid-feedback').show();
+            }
+
+            if(!last_name) {
+                $modal.find('[name="last_name"]').siblings('.invalid-feedback').show();
+            }
+
+            if(!email) {
+                $modal.find('[name="email"]').siblings('.invalid-feedback').show();
+            }
+
+            if(first_name && last_name && email) {
+
+                $.post("{{url('edit')}}",
+                    {
+                        '_token': csrf_token,
+                        id: id,
+                        first_name: first_name,
+                        last_name: last_name,
+                        email: email,
+                        phone: phone,
+                        birthdate: birthdate,
+                        address1: address1,
+                        address2: address2,
+                        city: city,
+                        state: state,
+                        zip: zip
+                    },
+                    "json")
+                    .done(function (result) {
+                        console.log(result);
+                        if(result.success) {
+                            $modal.modal('hide');
+                            setTimeout(function() {
+                                location.reload();
+                            }, 400);
+                        } else {
+                            for(key in result.errors) {
+                                $modal.find("[name=" + key + "]").siblings(".invalid-feedback").html(result.errors[key]).show();
+
+                            }
+                        }
+
+                    })
+                    .fail(function () {
+                        // todo update err message
+                    });
+            }
+        }
+
     </script>
 
 @endsection

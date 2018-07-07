@@ -11,6 +11,8 @@
 |
 */
 
-Route::get('/', 'HomeController@getIndex');
+Route::get('/', 'ContactsController@getIndex');
 
 Route::post('add', 'ContactsController@postAddNewContact');
+Route::post('delete', 'ContactsController@postDeleteContact');
+Route::post('edit', 'ContactsController@postEditContact');
