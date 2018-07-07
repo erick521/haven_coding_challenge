@@ -34,9 +34,9 @@ class Contact extends Model
     protected $hidden = [
     ];
 
-    public static function getAllOrderedBy($orderedBy="first_name") {
+    public static function getAllOrderedBy($pagination= 10, $orderedBy="first_name") {
         return Contact::select()
             ->orderBy($orderedBy)
-            ->get();
+            ->paginate($pagination);
     }
 }

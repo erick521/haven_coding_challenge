@@ -2,7 +2,14 @@
 
 @section('content')
 
+    <div class="jumbotron">
+        <div class="container-fluid">
+            <h1>My Address Book</h1>
+        </div>
+    </div>
+
     <div class="container-fluid">
+
         @csrf
         <div class="d-flex flex-row p-2">
             <!-- Button trigger modal -->
@@ -10,6 +17,7 @@
                 Add New Contact
             </button>
         </div>
+        {{ $contacts->links() }}
         <div class="d-flex flex-row p-2">
 
 
@@ -38,7 +46,7 @@
                 </tbody>
             </table>
         </div>
-
+        {{ $contacts->links() }}
     </div>
 
     <!-- Modal -->
@@ -46,7 +54,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                    <h5 class="modal-title" id="contactModalHeader">Add Contact</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -190,6 +198,7 @@
 
         $(function () {
             $('#contactDetailsModal').on('hidden.bs.modal', function() {
+                $("#contactModalHeader").html("Add Contact");
                 $(this).find("form").trigger("reset");
 
                 $(this).find("input").removeAttr('disabled');
@@ -306,11 +315,14 @@
             var contact = $button.data('contact');
 
             if(disableControls) {
+                $("#contactModalHeader").html("Contact Details");
                 $modal.find("input").attr('disabled', 'disabled');
                 $modal.find("select").attr('disabled', 'disabled');
             } else {
+                $("#contactModalHeader").html("Edit Contact");
                 $modal.find("[name='saveButton']").data('id', contact["id"]).show();
             }
+
             $modal.find("[name='addButton']").hide();
 
             $modal.find("[name='first_name']").val(contact["first_name"]);
