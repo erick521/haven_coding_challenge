@@ -9,10 +9,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Contact;
 
 class HomeController extends Controller
 {
     public function getIndex(Request $request) {
-        return view('home');
+
+        // collect contacts from Contact
+        $contacts = Contact::getAllOrderedBy();
+
+        return view('home')->with(["contacts" => $contacts]);
     }
 }
