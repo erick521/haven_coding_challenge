@@ -235,9 +235,11 @@
             $modal.find("[name='last_name']").val(contact["last_name"]);
             $modal.find("[name='email']").val(contact["email"]);
 
-            $("#phone").intlTelInput("setNumber", contact["phone"]);
-            var formattedPhone = $("#phone").intlTelInput("getNumber", intlTelInputUtils.numberFormat.NATIONAL);
-            $modal.find("[name='phone']").val(formattedPhone);
+            if(contact["phone"]) {
+                $("#phone").intlTelInput("setNumber", contact["phone"]);
+                var formattedPhone = $("#phone").intlTelInput("getNumber", intlTelInputUtils.numberFormat.NATIONAL);
+                $modal.find("[name='phone']").val(formattedPhone);
+            }
 
             $modal.find("[name='birthdate']").val(contact["birthdate"]);
             $modal.find("[name='address1']").val(contact["address1"]);
@@ -266,7 +268,11 @@
             $modal.find("[name='first_name']").val(contact["first_name"]);
             $modal.find("[name='last_name']").val(contact["last_name"]);
             $modal.find("[name='email']").val(contact["email"]);
-            $modal.find("[name='phone']").intlTelInput("setNumber", contact["phone"]);
+
+            if(contact["phone"]) {
+                $modal.find("[name='phone']").intlTelInput("setNumber", contact["phone"]);
+            }
+
             $modal.find("[name='birthdate']").val(contact["birthdate"]);
             $modal.find("[name='address1']").val(contact["address1"]);
             $modal.find("[name='address2']").val(contact["address2"]);
