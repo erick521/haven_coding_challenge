@@ -36,7 +36,7 @@
                             </div>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="phone">Phone</label>
+                            <label for="phone">Phone (10 digit number)</label>
                             <input type="text" class="form-control" id="phone" name="phone">
                             <div class="invalid-feedback">
                                 Please provide a valid phone.
@@ -44,7 +44,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="birthdate">Birthdate</label>
+                        <label for="birthdate">Birthdate (yyyy-mm-dd)</label>
                         <input type="text" class="form-control" id="birthdate" name="birthdate">
                         <div class="invalid-feedback">
                             Please provide a valid birthday.
