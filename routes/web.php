@@ -12,7 +12,9 @@
 */
 
 Route::get('/', 'ContactsController@getIndex');
+Route::get('sort/{sort_field}/{order}', 'ContactsController@getIndex');
 
 Route::post('add', 'ContactsController@postAddNewContact');
 Route::post('delete', 'ContactsController@postDeleteContact');
 Route::post('edit', 'ContactsController@postEditContact');
+

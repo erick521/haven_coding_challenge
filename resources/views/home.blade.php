@@ -4,7 +4,7 @@
 
     <div class="jumbotron">
         <div class="container-fluid">
-            <h1>My Address Book</h1>
+            <h1>Erick's Address Book</h1>
         </div>
     </div>
 
@@ -29,7 +29,7 @@
     @include('modals.contact-form-modal')
     @include('modals.contact-details-modal')
 
-    <script type="text/javascript">
+    <script>
 
         $(function () {
             $('#contactFormModal').on('hidden.bs.modal', function() {

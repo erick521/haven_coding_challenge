@@ -20,13 +20,24 @@ class ContactsController extends Controller
         View::share('GOOGLE_MAPS_API_KEY', env('GOOGLE_MAPS_API_KEY'));
     }
 
-    public function getIndex(Request $request) {
+    public function getIndex(Request $request, $sort_field = 'first_name', $order = 'asc') {
+
+        // validate sort field
+        if(!empty($sort_field) &&
+            $sort_field != 'first_name' &&
+            $sort_field != 'last_name' &&
+            $sort_field != 'email') {
+            $sort_field = 'first_name';
+        }
 
         // collect contacts from Contact
-        $contacts = Contact::getAllOrderedBy();
+        $contacts = Contact::getAllOrderedBy(10, $sort_field, $order=='asc');
 
-
-        return view('home')->with(["contacts" => $contacts]);
+        return view('home')->with(
+            [
+                "contacts" => $contacts,
+                "sort" => ['column' => $sort_field, 'order' => $order]
+            ]);
     }
 
     /**

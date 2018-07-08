@@ -1,9 +1,57 @@
 <table class="table">
     <thead>
     <tr>
-        <th scope="col">First Name</th>
-        <th scope="col">Last Name</th>
-        <th scope="col">Email</th>
+        <th scope="col">
+                @if($sort["column"] == 'first_name')
+                    @if($sort["order"] == 'asc')
+                    <a href="{{url("sort/first_name/desc")}}">First Name
+                        <i class="fa fa-sort-up"></i>
+                    </a>
+                    @else
+                        <a href="{{url("sort/first_name/asc")}}">First Name
+                            <i class="fa fa-sort-down"></i>
+                        </a>
+                    @endif
+                @else
+                    <a href="{{url("sort/first_name/asc")}}">First Name
+                        <i disabled class="fa fa-sort"></i>
+                    </a>
+                @endif
+        </th>
+        <th scope="col">
+            @if($sort["column"] == 'last_name')
+                @if($sort["order"] == 'asc')
+                    <a href="{{url("sort/last_name/desc")}}">Last Name
+                        <i class="fa fa-sort-up"></i>
+                    </a>
+                @else
+                    <a href="{{url("sort/last_name/asc")}}">Last Name
+                        <i class="fa fa-sort-down"></i>
+                    </a>
+                @endif
+            @else
+                <a href="{{url("sort/last_name/asc")}}">Last Name
+                    <i class="fa fa-sort"></i>
+                </a>
+            @endif
+        </th>
+        <th scope="col">
+            @if($sort["column"] == 'email')
+                @if($sort["order"] == 'asc')
+                    <a href="{{url("sort/email/desc")}}">Email
+                        <i class="fa fa-sort-up"></i>
+                    </a>
+                @else
+                    <a href="{{url("sort/email/asc")}}">Email
+                        <i class="fa fa-sort-down"></i>
+                    </a>
+                @endif
+            @else
+                <a href="{{url("sort/email/asc")}}">Email
+                    <i class="fa fa-sort"></i>
+                </a>
+            @endif
+        </th>
         <th scope="col">Options</th>
     </tr>
     </thead>

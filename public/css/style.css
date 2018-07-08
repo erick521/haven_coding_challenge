@@ -1,9 +1,18 @@
+body {
+    font-family: 'Nothing You Could Do', cursive;
+}
+
 .jumbotron {
     color: white;
-    background-image: url("/images/300-sl-alternative-energy-blue-sky-371900.jpg");
+    background-image: url("/images/background-2734804__340.jpg ");
     background-size: cover;}
 
 #map {
     height: 400px;  /* The height is 400 pixels */
     width: 100%;  /* The width is the width of the web page */
+}
+
+th a {
+    text-decoration: none;
+    color: black;
 }
