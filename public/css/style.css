@@ -12,7 +12,17 @@ body {
     width: 100%;  /* The width is the width of the web page */
 }
 
-th a {
+a {
     text-decoration: none;
     color: black;
+}
+
+th a:hover{
+    text-decoration: none !important;
+    color: black;
+}
+
+a:hover{
+    text-decoration: none !important;
+    color: white;
 }

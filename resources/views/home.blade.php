@@ -2,28 +2,45 @@
 
 @section('content')
 
+    <a href="{{url('/')}}" style="">
     <div class="jumbotron">
+
         <div class="container-fluid">
             <h1>Erick's Address Book</h1>
         </div>
+
     </div>
+    </a>
 
     <div class="container-fluid">
 
         @csrf
         <div class="d-flex flex-row p-2">
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#contactFormModal">
-                Add New Contact
-            </button>
+            <div class="p-2">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#contactFormModal">
+                    Add New Contact
+                </button>
+            </div>
+            <div class="p-2 flex-fill">
+                @include('search', ['search'=>$search])
+            </div>
         </div>
-        {{ $contacts->links() }}
+        {{ $contacts->appends([
+            'sort' => $sort["column"],
+            'order' => $sort["order"],
+            'search' => $search
+            ])->links() }}
         <div class="d-flex flex-row p-2">
 
-        @include('tables.contact-list', ['contacts' => $contacts])
+        @include('tables.contact-list', ['contacts' => $contacts, 'search' => $search])
 
         </div>
-        {{ $contacts->links() }}
+        {{ $contacts->appends([
+            'sort' => $sort["column"],
+            'order' => $sort["order"],
+            'search' => $search
+            ])->links() }}
     </div>
 
     @include('modals.contact-form-modal')

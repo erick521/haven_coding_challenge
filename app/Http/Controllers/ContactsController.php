@@ -16,11 +16,17 @@ use App\Contact;
 
 class ContactsController extends Controller
 {
+    private $pagination = 10;
+
     public function __construct() {
         View::share('GOOGLE_MAPS_API_KEY', env('GOOGLE_MAPS_API_KEY'));
     }
 
-    public function getIndex(Request $request, $sort_field = 'first_name', $order = 'asc') {
+    public function getIndex(Request $request) {
+
+        $sort_field = empty($request->sort) ? "first_name" : $request->sort;
+        $order = empty($request->order) ? "asc" : $request->order;
+        $search = $request->search;
 
         // validate sort field
         if(!empty($sort_field) &&
@@ -31,12 +37,23 @@ class ContactsController extends Controller
         }
 
         // collect contacts from Contact
-        $contacts = Contact::getAllOrderedBy(10, $sort_field, $order=='asc');
+        $contacts = [];
+
+        if(empty($search)) {
+            $contacts = Contact::getAllOrderedBy($this->pagination, $sort_field, $order=='asc');
+        } else {
+            $contacts = Contact::getSearchOrderedBy($search,$this->pagination, $sort_field, $order=='asc');
+        }
+
 
         return view('home')->with(
             [
                 "contacts" => $contacts,
-                "sort" => ['column' => $sort_field, 'order' => $order]
+                'search' => $search,
+                "sort" => [
+                    'column' => $sort_field,
+                    'order' => $order
+                ]
             ]);
     }
 

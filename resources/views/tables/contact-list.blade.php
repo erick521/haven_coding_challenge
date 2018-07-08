@@ -4,16 +4,16 @@
         <th scope="col">
                 @if($sort["column"] == 'first_name')
                     @if($sort["order"] == 'asc')
-                    <a href="{{url("sort/first_name/desc")}}">First Name
+                    <a href="{{url("?sort=first_name&order=desc&search=".$search)}}">First Name
                         <i class="fa fa-sort-up"></i>
                     </a>
                     @else
-                        <a href="{{url("sort/first_name/asc")}}">First Name
+                        <a href="{{url("?sort=first_name&order=asc&search=".$search)}}">First Name
                             <i class="fa fa-sort-down"></i>
                         </a>
                     @endif
                 @else
-                    <a href="{{url("sort/first_name/asc")}}">First Name
+                    <a href="{{url("?sort=first_name&order=asc&search=".$search)}}">First Name
                         <i disabled class="fa fa-sort"></i>
                     </a>
                 @endif
@@ -21,16 +21,16 @@
         <th scope="col">
             @if($sort["column"] == 'last_name')
                 @if($sort["order"] == 'asc')
-                    <a href="{{url("sort/last_name/desc")}}">Last Name
+                    <a href="{{url("?sort=last_name&order=desc&search=".$search)}}">Last Name
                         <i class="fa fa-sort-up"></i>
                     </a>
                 @else
-                    <a href="{{url("sort/last_name/asc")}}">Last Name
+                    <a href="{{url("?sort=last_name&order=asc&search=".$search)}}">Last Name
                         <i class="fa fa-sort-down"></i>
                     </a>
                 @endif
             @else
-                <a href="{{url("sort/last_name/asc")}}">Last Name
+                <a href="{{url("?sort=last_name&order=asc&search=".$search)}}">Last Name
                     <i class="fa fa-sort"></i>
                 </a>
             @endif
@@ -38,16 +38,16 @@
         <th scope="col">
             @if($sort["column"] == 'email')
                 @if($sort["order"] == 'asc')
-                    <a href="{{url("sort/email/desc")}}">Email
+                    <a href="{{url("?sort=email&order=desc&search=".$search)}}">Email
                         <i class="fa fa-sort-up"></i>
                     </a>
                 @else
-                    <a href="{{url("sort/email/asc")}}">Email
+                    <a href="{{url("?sort=email&order=asc&search=".$search)}}">Email
                         <i class="fa fa-sort-down"></i>
                     </a>
                 @endif
             @else
-                <a href="{{url("sort/email/asc")}}">Email
+                <a href="{{url("?sort=email&order=asc&search=".$search)}}">Email
                     <i class="fa fa-sort"></i>
                 </a>
             @endif

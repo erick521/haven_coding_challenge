@@ -45,4 +45,19 @@ class Contact extends Model
             ->orderBy($orderedBy, $asc)
             ->paginate($pagination);
     }
+
+    public static function getSearchOrderedBy($search, $pagination= 10, $orderedBy="first_name", $ascending=true) {
+
+        $asc = "ASC";
+        if(!$ascending) {
+            $asc = "DESC";
+        }
+
+        return Contact::select()
+            ->where('first_name', 'like', '%'.$search.'%')
+            ->orWhere('last_name', 'like', '%'.$search.'%')
+            ->orWhere('email', 'like', '%'.$search.'%')
+            ->orderBy($orderedBy, $asc)
+            ->paginate($pagination);
+    }
 }
