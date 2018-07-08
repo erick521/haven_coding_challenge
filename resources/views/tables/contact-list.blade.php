@@ -64,9 +64,10 @@
             <td style="vertical-align: middle;">
                 <a title="View Details..."><button class="btn btn-outline-secondary btn-sm" onclick="showContactDetails(this);" data-contact="{{$contact}}"><i class="fa fa-info"></i></button></a>
                 <a title="Edit..."><button class="btn btn-outline-secondary btn-sm" onclick="showContactForm(this);" data-contact="{{$contact}}"><i class="fa fa-edit"></i></button></a>
-                <a title="Delete..."><button class="btn btn-outline-secondary btn-sm" onclick="deleteContact(this);" data-id="{{$contact["id"]}}"><i class="fa fa-times"></i></button></a>
+                <a title="Delete..."><button class="btn btn-outline-secondary btn-sm" data-toggle="confirmation" data-popout="true" data-singleton="true" data-id="{{$contact["id"]}}"><i class="fa fa-times"></i></button></a>
             </td>
         </tr>
+
     @endforeach
     </tbody>
 </table>

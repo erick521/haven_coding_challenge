@@ -155,3 +155,7 @@ a:hover{
     background: #D6E4BE;
     color: #000;
 }
+
+.popover {
+    font-family: 'Special Elite', cursive;
+}

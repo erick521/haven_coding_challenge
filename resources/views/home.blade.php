@@ -105,6 +105,14 @@
             $('input[type=radio]').on('change', function() {
                 $(this).parents("form").submit();
             });
+
+            $('[data-toggle=confirmation]').confirmation({
+                rootSelector: '[data-toggle=confirmation]',
+                onConfirm: function () {
+                    var id = $(this).data('id');
+                    deleteContact(id);
+                }
+            });
         });
 
         function initMap() {
@@ -235,12 +243,9 @@
             }
         }
 
-        function deleteContact(button) {
-
-            var $button = $(button);
+        function deleteContact(id) {
 
             var csrf_token = $("[name='_token']").val();
-            var id = $button.data('id');
 
             $.post("{{url('delete')}}",
                 {
