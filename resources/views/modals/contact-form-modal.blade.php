@@ -36,10 +36,10 @@
                             </div>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="phone">Phone (10 digit number)</label>
-                            <input type="text" class="form-control" id="phone" name="phone">
-                            <div class="invalid-feedback">
-                                Please provide a valid phone.
+                            <label for="phone">Phone ex. "(909) 555-1234"</label>
+                            <input type="tel" class="form-control" id="phone" name="phone">
+                            <div id="phone-invalid" class="invalid-feedback">
+                                Please provide a valid phone number.
                             </div>
                         </div>
                     </div>

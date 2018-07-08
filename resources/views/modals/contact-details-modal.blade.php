@@ -32,7 +32,7 @@
                     <div class="form-row">
                         <label for="phone" class="col-sm-4 col-form-label">Phone</label>
                         <div class="col-sm-8">
-                            <input type="text" readonly class="form-control-plaintext" id="phone" name="phone">
+                            <input type="text" readonly class="form-control-plaintext" id="phoneDetail" name="phone">
                         </div>
                     </div>
                     <div class="form-row">

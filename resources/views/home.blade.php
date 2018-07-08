@@ -52,6 +52,27 @@
         var map;
         var marker;
 
+        $(function () {
+            $('#contactFormModal').on('hidden.bs.modal', function() {
+                $("#contactFormModalHeader").html("Add Contact");
+                $(this).find("form").trigger("reset");
+
+                $(this).find("[name='addButton']").show();
+                $(this).find("[name='saveButton']").hide();
+            });
+
+            $('#contactDetailsModal').on('hidden.bs.modal', function() {
+                marker.setMap(null);
+            });
+
+            $("#phone").intlTelInput(
+                {
+                    utilsScript: "js/utils.js",
+                    allowDropdown: false,
+                    autoPlaceholder: "off"
+                });
+        });
+
         function initMap() {
 
             geocoder = new google.maps.Geocoder();
@@ -82,7 +103,7 @@
                         marker = new google.maps.Marker({
                             map: map,
                             position: results[0].geometry.location,
-                            icon: "{{url('images/Icon-Small-40.png')}}"
+                            icon: "{{url('/img/Icon-Small-40.png')}}"
                         });
                     } else {
                         alert('Geocode was not successful for the following reason: ' + status);
@@ -91,23 +112,12 @@
             );
         }
 
-        $(function () {
-            $('#contactFormModal').on('hidden.bs.modal', function() {
-                $("#contactFormModalHeader").html("Add Contact");
-                $(this).find("form").trigger("reset");
-
-                $(this).find("[name='addButton']").show();
-                $(this).find("[name='saveButton']").hide();
-            });
-
-            $('#contactDetailsModal').on('hidden.bs.modal', function() {
-                marker.setMap(null);
-            });
-        });
-
         function addNewContact(button) {
             var $button = $(button);
             var $modal = $button.parents(".modal");
+
+            // clear previous errors
+            $modal.find('.invalid-feedback').hide();
 
             var csrf_token = $('[name="_token"]').val();
             var first_name = $modal.find('[name="first_name"]').val();
@@ -121,7 +131,6 @@
             var state = $modal.find('[name="state"]').val();
             var zip = $modal.find('[name="zip"]').val();
 
-            $modal.find('.invalid-feedback').hide();
 
             if(!first_name) {
                 $modal.find('[name="first_name"]').siblings('.invalid-feedback').show();
@@ -132,10 +141,21 @@
             }
 
             if(!email) {
-                $modal.find('[name="email"]').siblings('.invalid-feedback').show();
+               $modal.find('[name="email"]').siblings('.invalid-feedback').show();
             }
 
-            if(first_name && last_name && email) {
+            var phoneIsValid = true;
+
+            if(phone) {
+                phoneIsValid = $modal.find('[name="phone"]').intlTelInput("isValidNumber");
+                if(phoneIsValid) {
+                   phone = $modal.find('[name="phone"]').intlTelInput("getNumber");
+                } else {
+                    $("#phone-invalid").show();
+                }
+            }
+
+            if(first_name && last_name && email && phoneIsValid) {
 
                 $.post("{{url('add')}}",
                     {
@@ -214,7 +234,11 @@
             $modal.find("[name='first_name']").val(contact["first_name"]);
             $modal.find("[name='last_name']").val(contact["last_name"]);
             $modal.find("[name='email']").val(contact["email"]);
-            $modal.find("[name='phone']").val(contact["phone"]);
+
+            $("#phone").intlTelInput("setNumber", contact["phone"]);
+            var formattedPhone = $("#phone").intlTelInput("getNumber", intlTelInputUtils.numberFormat.NATIONAL);
+            $modal.find("[name='phone']").val(formattedPhone);
+
             $modal.find("[name='birthdate']").val(contact["birthdate"]);
             $modal.find("[name='address1']").val(contact["address1"]);
             $modal.find("[name='address2']").val(contact["address2"]);
@@ -242,7 +266,7 @@
             $modal.find("[name='first_name']").val(contact["first_name"]);
             $modal.find("[name='last_name']").val(contact["last_name"]);
             $modal.find("[name='email']").val(contact["email"]);
-            $modal.find("[name='phone']").val(contact["phone"]);
+            $modal.find("[name='phone']").intlTelInput("setNumber", contact["phone"]);
             $modal.find("[name='birthdate']").val(contact["birthdate"]);
             $modal.find("[name='address1']").val(contact["address1"]);
             $modal.find("[name='address2']").val(contact["address2"]);
@@ -258,7 +282,7 @@
             var $modal = $button.parents(".modal");
 
             var id = $button.data('id');
-            console.log(id);
+            $modal.find('.invalid-feedback').hide();
 
             var csrf_token = $('[name="_token"]').val();
             var first_name = $modal.find('[name="first_name"]').val();
@@ -272,7 +296,7 @@
             var state = $modal.find('[name="state"]').val();
             var zip = $modal.find('[name="zip"]').val();
 
-            $modal.find('.invalid-feedback').hide();
+
 
             if(!first_name) {
                 $modal.find('[name="first_name"]').siblings('.invalid-feedback').show();
@@ -286,7 +310,18 @@
                 $modal.find('[name="email"]').siblings('.invalid-feedback').show();
             }
 
-            if(first_name && last_name && email) {
+            var phoneIsValid = true;
+
+            if(phone) {
+                phoneIsValid = $modal.find('[name="phone"]').intlTelInput("isValidNumber");
+                if(phoneIsValid) {
+                    phone = $modal.find('[name="phone"]').intlTelInput("getNumber");
+                } else {
+                    $("#phone-invalid").show();
+                }
+            }
+
+            if(first_name && last_name && email && phoneIsValid) {
 
                 $.post("{{url('edit')}}",
                     {

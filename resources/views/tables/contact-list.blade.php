@@ -14,7 +14,7 @@
                     @endif
                 @else
                     <a href="{{url("?sort=first_name&order=asc&search=".$search)}}">First Name
-                        <i disabled class="fa fa-sort"></i>
+                        <i style="color: lightgray;" class="fa fa-sort"></i>
                     </a>
                 @endif
         </th>
@@ -31,7 +31,7 @@
                 @endif
             @else
                 <a href="{{url("?sort=last_name&order=asc&search=".$search)}}">Last Name
-                    <i class="fa fa-sort"></i>
+                    <i style="color: lightgray;" class="fa fa-sort"></i>
                 </a>
             @endif
         </th>
@@ -48,7 +48,7 @@
                 @endif
             @else
                 <a href="{{url("?sort=email&order=asc&search=".$search)}}">Email
-                    <i class="fa fa-sort"></i>
+                    <i style="color: lightgray;" class="fa fa-sort"></i>
                 </a>
             @endif
         </th>

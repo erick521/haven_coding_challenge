@@ -122,7 +122,7 @@ class ContactsController extends Controller
             'first_name' => 'required|max:50',
             'last_name' => 'required|max:50',
             'email' => 'required|email',
-            'phone' => 'min:10|max:10|present',
+            'phone' => 'present',
             'birthdate' => 'present|date_format:Y-m-d|nullable',
             'address1' => 'present',
             'address2' =>  'present',
