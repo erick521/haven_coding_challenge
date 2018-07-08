@@ -16,17 +16,31 @@ use App\Contact;
 
 class ContactsController extends Controller
 {
-    private $pagination = 10;
+    private $pagination = '10';
 
     public function __construct() {
         View::share('GOOGLE_MAPS_API_KEY', env('GOOGLE_MAPS_API_KEY'));
     }
 
+    /**
+     * @param Request $request
+     * @return mixed
+     */
     public function getIndex(Request $request) {
 
         $sort_field = empty($request->sort) ? "first_name" : $request->sort;
         $order = empty($request->order) ? "asc" : $request->order;
         $search = $request->search;
+
+        $pages = $request->input("inlineRadioOptions");
+
+        if(!empty($pages)) {
+            if($pages == '10' ||
+                $pages == '25' ||
+                $pages == '50') {
+                $this->pagination = $pages;
+            }
+        }
 
         // validate sort field
         if(!empty($sort_field) &&
@@ -50,6 +64,7 @@ class ContactsController extends Controller
             [
                 "contacts" => $contacts,
                 'search' => $search,
+                'pages' => $this->pagination,
                 "sort" => [
                     'column' => $sort_field,
                     'order' => $order
@@ -64,7 +79,6 @@ class ContactsController extends Controller
      * @return mixed
      */
     public function postAddNewContact(Request $request) {
-
         $validator = Validator::make($request->all(),
             self::getValidationRules());
 
@@ -123,7 +137,7 @@ class ContactsController extends Controller
             'last_name' => 'required|max:50',
             'email' => 'required|email',
             'phone' => 'present',
-            'birthdate' => 'present|date_format:Y-m-d|nullable',
+            'birthdate' => 'present',
             'address1' => 'present',
             'address2' =>  'present',
             'city' => 'present',

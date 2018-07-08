@@ -1,4 +1,4 @@
-<form action="/">
+<form action="/" autocomplete="off">
     <div class="form-row">
         <div class="input-group mb-2">
             <input type="text" class="form-control" id="search" name="search" placeholder="Type to search..." value="{{$search}}">

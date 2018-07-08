@@ -10,7 +10,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <form autocomplete="off">
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="first_name">First Name</label>
@@ -44,7 +44,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="birthdate">Birthdate (yyyy-mm-dd)</label>
+                        <label for="birthdate">Birthdate</label>
                         <input type="text" class="form-control" id="birthdate" name="birthdate">
                         <div class="invalid-feedback">
                             Please provide a valid birthday.

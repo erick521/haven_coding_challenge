@@ -10,7 +10,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <form autocomplete="off">
                     <div class="form-row">
                         <label for="first_name" class="col-sm-4 col-form-label">First Name</label>
                         <div class="col-sm-8">
@@ -38,7 +38,7 @@
                     <div class="form-row">
                         <label for="birthdate" class="col-sm-4 col-form-label">Birthdate</label>
                         <div class="col-sm-8">
-                            <input type="text" readonly class="form-control-plaintext" id="birthdate" name="birthdate">
+                            <input type="text" readonly class="form-control-plaintext" id="birthdateDetail" name="birthdate">
                         </div>
                     </div>
                     <div class="form-row">

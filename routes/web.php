@@ -11,9 +11,11 @@
 |
 */
 
-Route::get('/', 'ContactsController@getIndex');
 
 Route::post('add', 'ContactsController@postAddNewContact');
 Route::post('delete', 'ContactsController@postDeleteContact');
 Route::post('edit', 'ContactsController@postEditContact');
+
+Route::get('/', 'ContactsController@getIndex');
+
 

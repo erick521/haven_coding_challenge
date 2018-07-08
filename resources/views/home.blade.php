@@ -2,20 +2,19 @@
 
 @section('content')
 
-    <a href="{{url('/')}}" style="">
+
+    <a href="{{url('/')}}">
     <div class="jumbotron">
-
-        <div class="container-fluid">
-            <h1>Erick's Address Book</h1>
+        <div class="container">
+        <h1>My Address Book.</h1>
         </div>
-
     </div>
     </a>
 
-    <div class="container-fluid">
+    <div class="container">
 
         @csrf
-        <div class="d-flex flex-row p-2">
+        <div class="d-flex flex-row">
             <div class="p-2">
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#contactFormModal">
@@ -26,21 +25,47 @@
                 @include('search', ['search'=>$search])
             </div>
         </div>
-        {{ $contacts->appends([
-            'sort' => $sort["column"],
-            'order' => $sort["order"],
-            'search' => $search
-            ])->links() }}
-        <div class="d-flex flex-row p-2">
+
+        <div class="d-flex flex-row">
+            <div class="mr-auto">
+                {{ $contacts->appends([
+                'sort' => $sort["column"],
+                'order' => $sort["order"],
+                'search' => $search
+                    ])->links() }}
+            </div>
+            <div class="">
+                <form action="{{url("/")}}">
+                    <input type="hidden" name="sort" value="{{$sort["column"]}}">
+                    <input type="hidden" name="order" value="{{$sort["order"]}}">
+                    <input type="hidden" name="search" value="{{$search}}">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio10" value="10" {{$pages == '10' ? 'checked' : ''}}>
+                        <label class="form-check-label" for="radio10">10</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio25" value="25" {{$pages == '25' ? 'checked' : ''}}>
+                        <label class="form-check-label" for="radio25">25</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio50" value="50" {{$pages == '50' ? 'checked' : ''}}>
+                        <label class="form-check-label" for="radio50">50 entries per page</label>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="d-flex flex-row">
 
         @include('tables.contact-list', ['contacts' => $contacts, 'search' => $search])
 
         </div>
+        <div class="d-flex flex-row">
         {{ $contacts->appends([
             'sort' => $sort["column"],
             'order' => $sort["order"],
             'search' => $search
             ])->links() }}
+        </div>
     </div>
 
     @include('modals.contact-form-modal')
@@ -71,6 +96,15 @@
                     allowDropdown: false,
                     autoPlaceholder: "off"
                 });
+
+            $("#birthdate").datepicker({
+                changeYear: true,
+                yearRange: "1918:2018"
+            });
+
+            $('input[type=radio]').on('change', function() {
+                $(this).parents("form").submit();
+            });
         });
 
         function initMap() {
@@ -106,7 +140,17 @@
                             icon: "{{url('/img/Icon-Small-40.png')}}"
                         });
                     } else {
-                        alert('Geocode was not successful for the following reason: ' + status);
+                        var msg = 'Geocode was not successful for the following reason: ' + status;
+
+                        switch(status) {
+                            case "ZERO_RESULTS":
+                                msg = "Unable to find address in maps. Please double check address validity and try again.";
+                                break;
+                            case "ERROR":
+                                msg = "There was a problem with the Google servers. Please try again later."
+                            default:
+                        }
+                        alert(msg);
                     }
                 }
             );
@@ -141,7 +185,7 @@
             }
 
             if(!email) {
-               $modal.find('[name="email"]').siblings('.invalid-feedback').show();
+                $modal.find('[name="email"]').siblings('.invalid-feedback').show();
             }
 
             var phoneIsValid = true;
@@ -149,7 +193,7 @@
             if(phone) {
                 phoneIsValid = $modal.find('[name="phone"]').intlTelInput("isValidNumber");
                 if(phoneIsValid) {
-                   phone = $modal.find('[name="phone"]').intlTelInput("getNumber");
+                    phone = $modal.find('[name="phone"]').intlTelInput("getNumber");
                 } else {
                     $("#phone-invalid").show();
                 }
@@ -173,7 +217,6 @@
                     },
                     "json")
                     .done(function (result) {
-                        console.log(result);
                         if(result.success) {
                             $modal.modal('hide');
                             setTimeout(function() {
@@ -182,13 +225,12 @@
                         } else {
                             for(key in result.errors) {
                                 $modal.find("[name=" + key + "]").siblings(".invalid-feedback").html(result.errors[key]).show();
-
                             }
                         }
 
                     })
                     .fail(function () {
-                        // todo update err message
+                        //alert("Failed to communicate with server. Contact Admin for assistance.");
                     });
             }
         }
@@ -200,8 +242,6 @@
             var csrf_token = $("[name='_token']").val();
             var id = $button.data('id');
 
-            console.log(id);
-
             $.post("{{url('delete')}}",
                 {
                     '_token': csrf_token,
@@ -209,7 +249,6 @@
                 },
                 "json")
                 .done(function (result) {
-                    // console.log(result);
                     if(result.success) {
                         setTimeout(function() {
                             location.reload();
@@ -220,7 +259,7 @@
 
                 })
                 .fail(function () {
-                    // todo update err message
+                    alert("Failed to communicate with server. Contact Admin for assistance.");
                 });
         }
 
@@ -303,7 +342,6 @@
             var zip = $modal.find('[name="zip"]').val();
 
 
-
             if(!first_name) {
                 $modal.find('[name="first_name"]').siblings('.invalid-feedback').show();
             }
@@ -346,7 +384,6 @@
                     },
                     "json")
                     .done(function (result) {
-                        console.log(result);
                         if(result.success) {
                             $modal.modal('hide');
                             setTimeout(function() {
@@ -361,7 +398,7 @@
 
                     })
                     .fail(function () {
-                        // todo update err message
+                        alert("Failed to communicate with server. Contact Admin for assistance.");
                     });
             }
         }
