@@ -73,9 +73,8 @@
                     </div>
                 </form>
                 <hr>
-                <h5>Maps Location</h5>
-                <div id="map">
-                </div>
+                <h5>Map Location</h5>
+                <div id="map"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" name="closeButton" class="btn btn-secondary" data-dismiss="modal">Close</button>

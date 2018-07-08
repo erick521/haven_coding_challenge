@@ -15,6 +15,16 @@ sudo chmod -R a+x storage/ bootstrap/cache
 
 # 3. Set up MySql DB on localhost or RDBMS and obtain credentials.
 # 4. copy .env.example to .env and update DB creds with actuals.
+#    Update the following parameters to your DB configuration:
+#    DB_HOST=
+#    DB_PORT=
+#    DB_DATABASE=
+#    DB_USERNAME=
+#    DB_PASSWORD=
+#
+#    Add the following parameter (and value) for your Google Maps API Key
+#    GOOGLE_MAPS_API_KEY=
+#
 # 5. Run Laravel migrations
 php artisan migrate
 
