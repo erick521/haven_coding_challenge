@@ -6,7 +6,7 @@
     <a href="{{url('/')}}">
     <div class="jumbotron">
         <div class="container">
-        <h1>My Address Book.</h1>
+        <h1>Erick's Address Book.</h1>
         </div>
     </div>
     </a>
