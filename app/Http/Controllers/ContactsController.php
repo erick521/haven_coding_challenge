@@ -18,11 +18,16 @@ class ContactsController extends Controller
 {
     private $pagination = '10';
 
+    /**
+     * ContactsController constructor.
+     */
     public function __construct() {
         View::share('GOOGLE_MAPS_API_KEY', env('GOOGLE_MAPS_API_KEY'));
     }
 
     /**
+     * Get main page of contacts sheet
+     * Also performs search and sorting of entries
      * @param Request $request
      * @return mixed
      */
@@ -103,6 +108,11 @@ class ContactsController extends Controller
         }
     }
 
+    /**
+     * Deletes contract entry based on id
+     * @param Request $request
+     * @return mixed
+     */
     public function postDeleteContact(Request $request) {
         $id = $request->input('id');
 
@@ -112,6 +122,11 @@ class ContactsController extends Controller
         return response()->json(['success' => true]);
     }
 
+    /**
+     * Edit contact info based on id
+     * @param Request $request
+     * @return mixed
+     */
     public function postEditContact(Request $request) {
 
         $validator = Validator::make($request->all(),
@@ -138,6 +153,10 @@ class ContactsController extends Controller
         }
     }
 
+    /**
+     * Return validation rules for contact form
+     * @return array
+     */
     protected static function getValidationRules() {
         return [
             'first_name' => 'required|max:50|alpha',
