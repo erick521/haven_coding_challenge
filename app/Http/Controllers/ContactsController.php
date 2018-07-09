@@ -50,13 +50,20 @@ class ContactsController extends Controller
             $sort_field = 'first_name';
         }
 
+        // validate order field
+        if(!empty($order) &&
+            $order != 'asc' &&
+            $order != 'desc') {
+            $order = 'asc';
+        }
+
         // collect contacts from Contact
         $contacts = [];
 
         if(empty($search)) {
-            $contacts = Contact::getAllOrderedBy($this->pagination, $sort_field, $order=='asc');
+            $contacts = Contact::getAllOrderedBy($this->pagination, $sort_field, $order=='desc');
         } else {
-            $contacts = Contact::getSearchOrderedBy($search,$this->pagination, $sort_field, $order=='asc');
+            $contacts = Contact::getSearchOrderedBy($search,$this->pagination, $sort_field, $order=='desc');
         }
 
 

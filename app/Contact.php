@@ -34,10 +34,10 @@ class Contact extends Model
     protected $hidden = [
     ];
 
-    public static function getAllOrderedBy($pagination= 10, $orderedBy="first_name", $ascending=true) {
+    public static function getAllOrderedBy($pagination= 10, $orderedBy="first_name", $descending=false) {
 
         $asc = "ASC";
-        if(!$ascending) {
+        if($descending) {
             $asc = "DESC";
         }
 
@@ -46,10 +46,10 @@ class Contact extends Model
             ->paginate($pagination);
     }
 
-    public static function getSearchOrderedBy($search, $pagination= 10, $orderedBy="first_name", $ascending=true) {
+    public static function getSearchOrderedBy($search, $pagination= 10, $orderedBy="first_name", $descending=false) {
 
         $asc = "ASC";
-        if(!$ascending) {
+        if($descending) {
             $asc = "DESC";
         }
 
