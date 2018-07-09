@@ -133,11 +133,11 @@ class ContactsController extends Controller
 
     protected static function getValidationRules() {
         return [
-            'first_name' => 'required|max:50',
-            'last_name' => 'required|max:50',
+            'first_name' => 'required|max:50|alpha',
+            'last_name' => 'required|max:50|alpha',
             'email' => 'required|email',
             'phone' => 'present',
-            'birthdate' => 'present',
+            'birthdate' => 'date|nullable',
             'address1' => 'present',
             'address2' =>  'present',
             'city' => 'present',
